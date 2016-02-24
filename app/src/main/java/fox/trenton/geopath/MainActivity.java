@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void record(View view){
         Intent intent = new Intent(this, MapsActivity.class);
-        intent.putExtra("test", true);
         this.startActivity(intent);
     }
 }

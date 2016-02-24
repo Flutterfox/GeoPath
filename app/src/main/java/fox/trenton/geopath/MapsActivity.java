@@ -1,16 +1,19 @@
 package fox.trenton.geopath;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,6 +22,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -32,16 +36,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double latitude, longitude;
     LocationManager locationManager;
     List<Location> locList;
+    Timer t;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        locList = new ArrayList<>();
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabStop);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                t.cancel();
+                goBack(view);
+            }
+        });
     }
 
 
@@ -63,7 +79,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         showCurrentLocation(getLocation());
 
         //Collects location periodically
-        Timer t = new Timer(true);
+        t = new Timer(true);
         t.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -124,7 +140,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             locationManager.requestLocationUpdates(provider, 2000, 0, locationListener);
             location = getLastBestLocation(locationManager);
         }
-        locList.add(location);
+        if (location != null)
+            locList.add(location);
         return location;
     }
 
@@ -150,6 +167,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } else {
             return locationNet;
         }
+    }
+
+    public void goBack(View view){
+        Intent intent = new Intent(this, MainActivity.class);
+        this.startActivity(intent);
     }
 
 }
