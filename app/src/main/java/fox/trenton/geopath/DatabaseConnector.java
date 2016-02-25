@@ -67,7 +67,9 @@ public class DatabaseConnector {
             database.close();
     }
 
-    // Create Database function
+
+    //Location
+    // Insert Location function
     public void InsertLocation(Location location, String type, String label, String description, String deviceID, String pathid) {
         String locationID = (location.getTime()) + deviceID;
         Date timestamp = new Date(location.getTime());
@@ -90,7 +92,7 @@ public class DatabaseConnector {
         close();
     }
 
-    // Update Database function
+    // Update Location function
     public void UpdateLocation(String locID, Location location, String type, String label, String description, String deviceID, String pathid) {
         Date timestamp = new Date(location.getTime());
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY", Locale.getDefault());
@@ -112,17 +114,11 @@ public class DatabaseConnector {
         close();
     }
 
-    // Delete Database function
+    // Delete Location function
     public void DeleteLocation(long locID) {
         open();
         database.delete(TABLE_LOC, LOCATIONID + "=" + locID, null);
         close();
-    }
-
-    // List all data function
-    public Cursor ListAllLocations() {
-        return database.query(TABLE_LOC, new String[] { LOCATIONID}, null,
-                null, null, null, TITLE);
     }
 
     // Capture single data by ID
@@ -131,4 +127,55 @@ public class DatabaseConnector {
                 null, null);
     }
 
+
+    //Path
+    // Insert Path function
+    public void InsertPath(String pathID, String deviceID, String label, String description) {
+        ContentValues newCon = new ContentValues();
+        newCon.put(PATHID, pathID);
+        newCon.put(USERID, deviceID);
+        newCon.put(LOCLABEL, label);
+        newCon.put(LOCDESCRIPTION, description);
+
+        open();
+        database.insert(TABLE_LOC, null, newCon);
+        close();
+    }
+
+    // Update Path function
+    public void UpdatePath(String pathID, String deviceID, String label, String description) {
+        ContentValues editCon = new ContentValues();
+        editCon.put(PATHID, pathID);
+        editCon.put(USERID, deviceID);
+        editCon.put(LOCLABEL, label);
+        editCon.put(LOCDESCRIPTION, description);
+
+        open();
+        database.update(TABLE_LOC, editCon, PATHID + "=" + pathID, null);
+        close();
+    }
+
+    // Delete Path function
+    public void DeletePath(long pathID) {
+        open();
+        database.delete(TABLE_LOC, PATHID + "=" + pathID, null);
+        close();
+    }
+
+    // Capture single data by ID
+    public Cursor GetOnePath(long pathID) {
+        return database.query(TABLE_PATH, null, PATHID + "=" + pathID, null, null,
+                null, null);
+    }
+
+    //Users
+    // Insert Users function
+    public void InsertUser(String deviceID) {
+        ContentValues newCon = new ContentValues();
+        newCon.put(USERID, deviceID);
+
+        open();
+        database.insert(TABLE_LOC, null, newCon);
+        close();
+    }
 }
