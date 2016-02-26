@@ -1,18 +1,14 @@
 package fox.trenton.geopath;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,17 +19,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private double latitude, longitude;
     LocationManager locationManager;
     List<Location> locList;
     Timer t;
@@ -60,7 +52,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -76,7 +67,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //Move to current location
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Location loc = getLocation();
         showCurrentLocation(getLocation());
+        saveLocation(loc);
 
         //Collects location periodically
         t = new Timer(true);
@@ -85,7 +78,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void run() {
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        addCurrentLocation(getLastBestLocation(locationManager));
+                        Location loc = getLastBestLocation(locationManager);
+                        addCurrentLocation(loc);
+                        saveLocation(loc);
                     }
                 });
 
@@ -104,6 +99,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.addMarker(new MarkerOptions().position(loc).title("Previous Location"));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 18));
+    }
+
+    private void saveLocation(Location location) {
+        String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        DatabaseConnector dc = new DatabaseConnector(this);
+        dc.open();
+        dc.InsertLocation(location, "general", "", "", android_id,"");
+        dc.close();
     }
 
     private Location getLocation() {
@@ -144,7 +147,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             locList.add(location);
         return location;
     }
-
 
     //Compares gps and network locations, chooses best, stores it in the list
     private Location getLastBestLocation(LocationManager lm) {

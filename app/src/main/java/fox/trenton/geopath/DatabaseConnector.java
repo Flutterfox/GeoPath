@@ -137,7 +137,7 @@ public class DatabaseConnector {
         newCon.put(LOCDESCRIPTION, description);
 
         open();
-        database.insert(TABLE_LOC, null, newCon);
+        database.insert(TABLE_PATH, null, newCon);
         close();
     }
 
@@ -150,14 +150,14 @@ public class DatabaseConnector {
         editCon.put(LOCDESCRIPTION, description);
 
         open();
-        database.update(TABLE_LOC, editCon, PATHID + "=" + pathID, null);
+        database.update(TABLE_PATH, editCon, PATHID + "=" + pathID, null);
         close();
     }
 
     // Delete Path function
     public void DeletePath(long pathID) {
         open();
-        database.delete(TABLE_LOC, PATHID + "=" + pathID, null);
+        database.delete(TABLE_PATH, PATHID + "=" + pathID, null);
         close();
     }
 
@@ -174,7 +174,7 @@ public class DatabaseConnector {
         newCon.put(USERID, deviceID);
 
         open();
-        database.insert(TABLE_LOC, null, newCon);
+        database.insert(TABLE_USERS, null, newCon);
         close();
     }
 
