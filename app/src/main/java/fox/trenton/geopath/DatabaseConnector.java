@@ -3,6 +3,7 @@ package fox.trenton.geopath;
 /**
  * Created by trenton on 2/24/16.
  */
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -50,9 +51,7 @@ public class DatabaseConnector {
     private DatabaseHelper dbOpenHelper;
 
     public DatabaseConnector(Context context) {
-        dbOpenHelper = new DatabaseHelper(context, null,
-                DATABASE_VERSION);
-
+        dbOpenHelper = new DatabaseHelper(context);
     }
 
     // Open Database function
@@ -177,5 +176,21 @@ public class DatabaseConnector {
         open();
         database.insert(TABLE_LOC, null, newCon);
         close();
+    }
+
+    //Check for existing user
+    public Cursor GetUser(String deviceID) {
+        return database.query(TABLE_USERS, null, USERID + "=" + deviceID, null, null,
+                null, null);
+    }
+
+    //Check if empty
+    public boolean CheckUsersEmpty() {
+        Cursor c = database.query(TABLE_USERS, null, null, null, null, null, null);
+        if (c.getCount() > 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

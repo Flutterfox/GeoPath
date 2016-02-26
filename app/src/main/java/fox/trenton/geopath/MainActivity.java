@@ -2,6 +2,7 @@ package fox.trenton.geopath;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,15 @@ public class MainActivity extends AppCompatActivity {
                 record(view);
             }
         });
+
+        String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        DatabaseConnector dc = new DatabaseConnector(this);
+        dc.open();
+        if (dc.CheckUsersEmpty()){
+            dc.InsertUser(android_id);
+        }
+        dc.close();
     }
 
     @Override

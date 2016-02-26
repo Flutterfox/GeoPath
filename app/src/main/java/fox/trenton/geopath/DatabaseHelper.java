@@ -43,6 +43,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DB_NAME, factory, version);
     }
 
+    public DatabaseHelper(Context context) {
+        super(context, DB_NAME, null, DATABASE_VERSION);
+    }
+
     //Table Create Statements
     //Create Table Users
     private static final String CREATE_TABLE_USERS = "CREATE TABLE "
