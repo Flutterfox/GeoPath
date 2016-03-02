@@ -90,4 +90,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Database will be wiped on version change
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOC);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PATH);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+
+        //Create new tables
+        onCreate(db);
+    }
+
 }

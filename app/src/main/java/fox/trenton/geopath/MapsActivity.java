@@ -86,7 +86,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
 
-        }, 0, 30000);
+        }, 30000, 30000);
     }
 
     private void showCurrentLocation(Location location) {

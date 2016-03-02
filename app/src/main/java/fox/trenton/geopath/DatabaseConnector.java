@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.provider.Settings;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -19,7 +20,6 @@ import java.util.Locale;
 public class DatabaseConnector {
 
     // Declare Variables
-    private static final int DATABASE_VERSION = 1;
 
     //Database Name
     private static final String DB_NAME = "GeoPath";
@@ -70,17 +70,17 @@ public class DatabaseConnector {
     //Location
     // Insert Location function
     public void InsertLocation(Location location, String type, String label, String description, String deviceID, String pathid) {
-        String locationID = (location.getTime()) + deviceID;
-        Date timestamp = new Date(location.getTime());
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY", Locale.getDefault());
-        String timedate = sdf.format(timestamp);
+        Date timestamp = new Date();
+        String df = DateFormat.getDateTimeInstance(
+                DateFormat.LONG, DateFormat.LONG).format(timestamp);
+        String locationID = timestamp.toString() + deviceID;
 
         ContentValues newCon = new ContentValues();
         newCon.put(LOCATIONID, locationID);
         newCon.put(LATITUDE, location.getLatitude());
         newCon.put(LONGITUDE, location.getLongitude());
         newCon.put(USERID, deviceID);
-        newCon.put(TIMEDATE, timedate);
+        newCon.put(TIMEDATE, df.replaceAll(" ", ""));
         newCon.put(TYPE, type);
         newCon.put(LOCLABEL, label);
         newCon.put(LOCDESCRIPTION, description);
