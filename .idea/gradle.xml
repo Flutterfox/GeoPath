@@ -10,6 +10,7 @@
           <set>
             <option value="/storage/Documents/Dev/AndroidStudioProjects/GeoPath" />
             <option value="/storage/Documents/Dev/AndroidStudioProjects/GeoPath/app" />
+            <option value="/storage/Documents/Dev/AndroidStudioProjects/GeoPath/volley" />
           </set>
         </option>
       </GradleProjectSettings>
