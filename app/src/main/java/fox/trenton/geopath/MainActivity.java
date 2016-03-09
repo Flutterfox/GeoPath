@@ -55,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        else if (id == R.id.action_TestConnection) {
+            Intent intent = new Intent(this, testConnection.class);
+            this.startActivity(intent);
+        }
 
         return super.onOptionsItemSelected(item);
     }

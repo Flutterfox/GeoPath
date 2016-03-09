@@ -1,43 +1,59 @@
 package fox.trenton.geopath;
 
 import android.app.Activity;
+import android.database.DataSetObserver;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.TextView;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by trenton on 3/7/16.
  */
 
-//This needs to be severely modified.
-// Add "extends ArrayAdapter<String>" below
-public class LocationList  {
-    private String[] ids;
-    private String[] names;
-    private String[] emails;
-    private Activity context;
+public class LocationList {
+    private String[] loc_ids, user_ids, types, labels, descriptions, path_ids;
+    private int[] lats, lons;
+    private Date[] timestamps;
 
-/*    public PathList(Activity context, String[] ids, String[] names, String[] emails) {
-        super(context, R.layout.list_view_layout, ids);
-        this.context = context;
-        this.ids = ids;
-        this.names = names;
-        this.emails = emails;
+    public LocationList(String[] loc_ids, String[] user_ids, String[] types,
+                        String[] labels, String[] descriptions, String[] path_ids,
+                        int[] lats, int[] lons, Date[] timestamps) {
+        this.loc_ids = loc_ids;
+        this.user_ids = user_ids;
+        this.types = types;
+        this.labels = labels;
+        this.descriptions = descriptions;
+        this.path_ids = path_ids;
+        this.lats = lats;
+        this.lons = lons;
+        this.timestamps = timestamps;
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = context.getLayoutInflater();
-        View listViewItem = inflater.inflate(R.layout.list_view_layout, null, true);
-        TextView textViewId = (TextView) listViewItem.findViewById(R.id.textViewId);
-        TextView textViewName = (TextView) listViewItem.findViewById(R.id.textViewName);
-        TextView textViewEmail = (TextView) listViewItem.findViewById(R.id.textViewEmail);
+    public List getList() {
+        List returnList = new ArrayList();
 
-        textViewId.setText(ids[position]);
-        textViewName.setText(names[position]);
-        textViewEmail.setText(emails[position]);
+        returnList.add(loc_ids);
+        returnList.add(user_ids);
+        returnList.add(types);
+        returnList.add(labels);
+        returnList.add(descriptions);
+        returnList.add(path_ids);
+        returnList.add(lats);
+        returnList.add(lons);
+        returnList.add(timestamps);
 
-        return listViewItem;*/
+        return returnList;
+    }
 }

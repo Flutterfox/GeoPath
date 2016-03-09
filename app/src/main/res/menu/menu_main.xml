@@ -7,4 +7,12 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_TestConnection"
+        app:showAsAction="always"
+        android:title="Test Connection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </menu>

@@ -8,9 +8,9 @@
         <option name="gradleJvm" value="1.8" />
         <option name="modules">
           <set>
-            <option value="/storage/Documents/Dev/AndroidStudioProjects/GeoPath" />
-            <option value="/storage/Documents/Dev/AndroidStudioProjects/GeoPath/app" />
-            <option value="/storage/Documents/Dev/AndroidStudioProjects/GeoPath/volley" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/volley" />
           </set>
         </option>
       </GradleProjectSettings>
