@@ -17,7 +17,7 @@ import com.android.volley.toolbox.Volley;
 
 public class testConnection extends AppCompatActivity implements View.OnClickListener {
 
-    public static final String JSON_URL = "http://simplifiedcoding.16mb.com/UserRegistration/json.php";
+    public static final String JSON_URL = R.string.JSON_IP + "GeoPathServer/rest/location";
 
     private Button buttonGet;
 
@@ -26,7 +26,7 @@ public class testConnection extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_test_connection);
 
         buttonGet = (Button) findViewById(R.id.buttonGet);
         buttonGet.setOnClickListener(this);

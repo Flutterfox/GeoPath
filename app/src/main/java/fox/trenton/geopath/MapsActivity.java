@@ -105,8 +105,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         DatabaseConnector dc = new DatabaseConnector(this);
         dc.open();
-        dc.InsertLocation(location, "general", "", "", android_id,"");
+        dc.InsertLocation(location, "general", "", "", android_id, "");
         dc.close();
+
+        LocationREST lr = new LocationREST();
+        lr.sendRequest();
     }
 
     private Location getLocation() {
