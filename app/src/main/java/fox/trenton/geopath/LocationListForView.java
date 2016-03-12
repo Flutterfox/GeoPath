@@ -39,8 +39,8 @@ public class LocationListForView extends ArrayAdapter<String> {
         LayoutInflater inflater = context.getLayoutInflater();
         View listViewItem = inflater.inflate(R.layout.list_view_layout, null, true);
 
-        TextView textViewLabel = (TextView) listViewItem.findViewById(R.id.label);
-        TextView textViewDescription = (TextView) listViewItem.findViewById(R.id.description);
+        TextView textViewLabel = (TextView) listViewItem.findViewById(R.id.textViewLabel);
+        TextView textViewDescription = (TextView) listViewItem.findViewById(R.id.textViewDescription);
 
         textViewLabel.setText(labels[position]);
         textViewDescription.setText(descriptions[position]);

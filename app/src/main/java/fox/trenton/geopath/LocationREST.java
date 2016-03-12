@@ -38,8 +38,8 @@ public class LocationREST {
     public void showJSON(String json){
         ParseLocJSON pj = new ParseLocJSON(json);
         pj.parseJSON();
-        ll = new LocationList(ParseLocJSON.loc_ids, ParseLocJSON.user_ids, ParseLocJSON.types,
-                ParseLocJSON.labels, ParseLocJSON.descriptions, ParseLocJSON.path_ids, ParseLocJSON.lats,
-                ParseLocJSON.lons, ParseLocJSON.timestamps);
+        ll = new LocationList(ParseLocJSON.loc_id, ParseLocJSON.user_id, ParseLocJSON.type,
+                ParseLocJSON.label, ParseLocJSON.description, ParseLocJSON.path_id, ParseLocJSON.lat,
+                ParseLocJSON.lon, ParseLocJSON.timestamp);
     }
 }

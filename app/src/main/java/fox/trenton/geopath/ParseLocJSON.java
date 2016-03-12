@@ -1,70 +1,82 @@
 package fox.trenton.geopath;
 
+import android.location.Location;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Created by trenton on 3/7/16.
  */
 public class ParseLocJSON {
-    public static String[] loc_ids, user_ids, types, labels, descriptions, path_ids;
-    public static int[] lats, lons;
-    public static Date[] timestamps;
+    public static String[] loc_id, user_id, type, label, description, path_id;
+    public static int[] lat, lon;
+    public static Date[] timestamp;
 
     public static final String JSON_ARRAY = "result";
-    public static final String USER_ID = "user_ids";
-    public static final String LOC_ID = "loc_ids";
-    public static final String TYPE = "types";
-    public static final String LABEL = "labels";
-    public static final String DESCRIPTION = "descriptions";
-    public static final String PATH_ID = "path_ids";
-    public static final String LATITUDE = "lats";
-    public static final String LONGITUDE = "lons";
-    public static final String TIMESTAMP = "timestamps";
-
-    private JSONArray locations = null;
+    public static final String USER_ID = "user_id";
+    public static final String LOC_ID = "loc_id";
+    public static final String TYPE = "type";
+    public static final String LABEL = "label";
+    public static final String DESCRIPTION = "description";
+    public static final String PATH_ID = "path_id";
+    public static final String LATITUDE = "lat";
+    public static final String LONGITUDE = "lon";
+    public static final String TIMESTAMP = "timestamp";
 
     private String json;
 
-    public ParseLocJSON(String json){
+    public ParseLocJSON(String json) {
         this.json = json;
     }
 
-    protected void parseJSON(){
-        JSONObject jsonObject=null;
-        try {
-            jsonObject = new JSONObject(json);
-            locations = jsonObject.getJSONArray(JSON_ARRAY);
+    protected void parseJSON() {
+        int count = json.split(":").length;
+        count = count / 9;
 
-            loc_ids = new String[locations.length()];
-            user_ids = new String[locations.length()];
-            types = new String[locations.length()];
-            labels = new String[locations.length()];
-            descriptions = new String[locations.length()];
-            path_ids = new String[locations.length()];
-            lats = new int[locations.length()];
-            lons = new int[locations.length()];
-            timestamps = new Date[locations.length()];
+        loc_id = new String[count];
+        user_id = new String[count];
+        type = new String[count];
+        label = new String[count];
+        description = new String[count];
+        path_id = new String[count];
+        lat = new int[count];
+        lon = new int[count];
+        timestamp = new Date[count];
 
-
-            for(int i=0;i< locations.length();i++){
-                JSONObject jo = locations.getJSONObject(i);
-                loc_ids[i] = jo.getString(LOC_ID);
-                user_ids[i] = jo.getString(USER_ID);
-                types[i] = jo.getString(TYPE);
-                labels[i] = jo.getString(LABEL);
-                descriptions[i] = jo.getString(DESCRIPTION);
-                path_ids[i] = jo.getString(PATH_ID);
-                lats[i] = jo.getInt(LATITUDE);
-                lons[i] = jo.getInt(LONGITUDE);
-                timestamps[i] = new Date(jo.getString(TIMESTAMP));;
-
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+            public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                return new Date(json.getAsJsonPrimitive().getAsLong());
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        });
+        Gson gson = builder.create();
+        CustomLocation location = gson.fromJson(json, CustomLocation.class);
+
+        loc_id[0] = location.getLocID();
+        user_id[0] = location.getUserID();
+        type[0] = location.getType();
+        label[0] = location.getLabel();
+        description[0] = location.getDescription();
+        path_id[0] = location.getPathID();
+        lat[0] = location.getLat();
+        lon[0] = location.getLon();
+        timestamp[0] = location.getTimestamp();
     }
 }

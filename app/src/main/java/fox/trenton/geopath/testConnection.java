@@ -17,7 +17,7 @@ import com.android.volley.toolbox.Volley;
 
 public class testConnection extends AppCompatActivity implements View.OnClickListener {
 
-    public static final String JSON_URL = R.string.JSON_IP + "GeoPathServer/rest/location";
+    public static final String JSON_URL = "http://172.25.4.125:8080/GeoPathServer/rest/location/sample";
 
     private Button buttonGet;
 
@@ -30,11 +30,10 @@ public class testConnection extends AppCompatActivity implements View.OnClickLis
 
         buttonGet = (Button) findViewById(R.id.buttonGet);
         buttonGet.setOnClickListener(this);
-        listView = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listViewLocations);
     }
 
     private void sendRequest(){
-
         StringRequest stringRequest = new StringRequest(JSON_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -45,7 +44,7 @@ public class testConnection extends AppCompatActivity implements View.OnClickLis
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(testConnection.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(testConnection.this, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -56,9 +55,9 @@ public class testConnection extends AppCompatActivity implements View.OnClickLis
     private void showJSON(String json){
         ParseLocJSON pj = new ParseLocJSON(json);
         pj.parseJSON();
-        LocationListForView ll = new LocationListForView(this, ParseLocJSON.loc_ids, ParseLocJSON.user_ids, ParseLocJSON.types,
-                ParseLocJSON.labels, ParseLocJSON.descriptions, ParseLocJSON.path_ids, ParseLocJSON.lats,
-                ParseLocJSON.lons, ParseLocJSON.timestamps);
+        LocationListForView ll = new LocationListForView(this, ParseLocJSON.loc_id, ParseLocJSON.user_id, ParseLocJSON.type,
+                ParseLocJSON.label, ParseLocJSON.description, ParseLocJSON.path_id, ParseLocJSON.lat,
+                ParseLocJSON.lon, ParseLocJSON.timestamp);
         listView.setAdapter(ll);
     }
 

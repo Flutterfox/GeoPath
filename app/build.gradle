@@ -27,4 +27,5 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.google.android.gms:play-services-maps:8.4.0'
     compile 'com.mcxiaoke.volley:library-aar:1.0.0'
+    compile files('C:/Users/Trenton/StudioProjects/GeoPath/libs/gson-2.6.2.jar')
 }
