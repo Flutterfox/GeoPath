@@ -1,22 +1,15 @@
 package fox.trenton.geopath;
 
-import android.app.Activity;
-import android.widget.ListView;
-import android.widget.Toast;
-
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
  * Created by trenton on 3/7/16.
  */
-public class LocationREST {
-    public static final String JSON_URL = "http://192.168.1.123:8080/GeoPathServer/rest/location";
+public class PathREST {
+    public static final String JSON_URL = "http://192.168.1.123:8080/GeoPathServer/rest/path/";
     LocationList ll;
 
     public void sendRequest(){

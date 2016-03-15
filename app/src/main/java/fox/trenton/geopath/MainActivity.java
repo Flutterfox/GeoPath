@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         dc.open();
         if (dc.CheckUsersEmpty()){
             dc.InsertUser(android_id);
+            saveUserToOracle(android_id);
         }
         dc.close();
     }
@@ -66,5 +68,16 @@ public class MainActivity extends AppCompatActivity {
     public void record(View view){
         Intent intent = new Intent(this, MapsActivity.class);
         this.startActivity(intent);
+    }
+
+    public void saveUserToOracle(String android_id){
+        UserREST ur = new UserREST();
+        String response = ur.sendRequest(android_id, this);
+        if (response == "success") {
+            Toast.makeText(MainActivity.this, "Successfully saved new user.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(MainActivity.this, "Failed to save new user.", Toast.LENGTH_LONG).show();
+        }
+
     }
 }
