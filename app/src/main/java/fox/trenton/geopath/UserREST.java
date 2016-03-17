@@ -1,30 +1,24 @@
 package fox.trenton.geopath;
 
 import android.content.Context;
-import android.net.Uri;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
-import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 
 /**
  * Created by trenton on 3/7/16.
  */
 public class UserREST {
-    public static final String JSON_URL = "http://172.25.3.97:8080/GeoPathServer/rest/user/insert";
+    public static final String JSON_URL = "http://172.25.4.15:8080/GeoPathServer/rest/user/insert";
     String response;
 
     public String sendRequest(final String id, Context context){
@@ -52,7 +46,6 @@ public class UserREST {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "text/plain");
-                //   headers.put("Accept", "application/json");
                 return headers;
             }
         };

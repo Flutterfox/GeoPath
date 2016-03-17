@@ -5,10 +5,9 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.provider.Settings;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,7 +26,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     LocationManager locationManager;
-    List<Location> locList;
+    List<CustomLocation> locList;
     Timer t;
 
     @Override
@@ -67,9 +66,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //Move to current location
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Location loc = getLocation();
         showCurrentLocation(getLocation());
-        saveLocation(loc);
 
         //Collects location periodically
         t = new Timer(true);
@@ -79,8 +76,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 runOnUiThread(new Runnable() {
                     public void run() {
                         Location loc = getLastBestLocation(locationManager);
-                        addCurrentLocation(loc);
-                        saveLocation(loc);
+                        if (loc != null) {
+                            addCurrentLocation(loc);
+                            addToList(loc);
+                        }
                     }
                 });
 
@@ -101,16 +100,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 18));
     }
 
-    private void saveLocation(Location location) {
-        String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-        DatabaseConnector dc = new DatabaseConnector(this);
-        dc.open();
-        dc.InsertLocation(location, "general", "", "", android_id, "");
-        dc.close();
 
-        LocationREST lr = new LocationREST();
-        lr.sendRequest();
-    }
 
     private Location getLocation() {
         Criteria criteria = new Criteria();
@@ -146,8 +136,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             locationManager.requestLocationUpdates(provider, 2000, 0, locationListener);
             location = getLastBestLocation(locationManager);
         }
-        if (location != null)
-            locList.add(location);
+
         return location;
     }
 
@@ -174,7 +163,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    private void addToList(Location location) {
+        CustomLocation cl = new CustomLocation(location, this);
+        for (CustomLocation check : locList) {
+            if (check.getLocID() == cl.getLocID()) {
+                return;
+            }
+        }
+        locList.add(cl);
+    }
+
+    private void saveLocations() {
+        DatabaseConnector dc = new DatabaseConnector(this);
+        dc.open();
+        //dc.InsertLocation(location, "general", "", "", android_id, "");
+        for (CustomLocation cl : locList) {
+            dc.InsertLocation(cl);
+        }
+        dc.close();
+    }
+
     public void goBack(View view){
+        //Saves locations to localDB
+        saveLocations();
+
+        //Sends locations to OracleDB
+        LocationREST lr = new LocationREST();
+        lr.sendRequest(locList, this);
+
+        //Starts the next activity
         Intent intent = new Intent(this, MainActivity.class);
         this.startActivity(intent);
     }

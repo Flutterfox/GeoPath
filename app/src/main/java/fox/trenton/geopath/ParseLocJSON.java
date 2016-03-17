@@ -1,32 +1,21 @@
 package fox.trenton.geopath;
 
-import android.location.Location;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Created by trenton on 3/7/16.
  */
 public class ParseLocJSON {
     public static String[] loc_id, user_id, type, label, description, path_id;
-    public static int[] lat, lon;
+    public static double[] lat, lon;
     public static Date[] timestamp;
 
     public static final String JSON_ARRAY = "result";
@@ -56,8 +45,8 @@ public class ParseLocJSON {
         label = new String[count];
         description = new String[count];
         path_id = new String[count];
-        lat = new int[count];
-        lon = new int[count];
+        lat = new double[count];
+        lon = new double[count];
         timestamp = new Date[count];
 
         GsonBuilder builder = new GsonBuilder();

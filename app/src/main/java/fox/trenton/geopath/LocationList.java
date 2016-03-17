@@ -1,22 +1,8 @@
 package fox.trenton.geopath;
 
-import android.app.Activity;
-import android.database.DataSetObserver;
-import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.TextView;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by trenton on 3/7/16.
@@ -24,12 +10,12 @@ import java.util.ListIterator;
 
 public class LocationList {
     private String[] loc_ids, user_ids, types, labels, descriptions, path_ids;
-    private int[] lats, lons;
+    private double[] lats, lons;
     private Date[] timestamps;
 
     public LocationList(String[] loc_ids, String[] user_ids, String[] types,
                         String[] labels, String[] descriptions, String[] path_ids,
-                        int[] lats, int[] lons, Date[] timestamps) {
+                        double[] lats, double[] lons, Date[] timestamps) {
         this.loc_ids = loc_ids;
         this.user_ids = user_ids;
         this.types = types;

@@ -20,9 +20,6 @@ public class DatabaseConnector {
 
     // Declare Variables
 
-    //Database Name
-    private static final String DB_NAME = "GeoPath";
-
     //Table Names
     private static final String TABLE_LOC = "LOCATION";
     private static final String TABLE_PATH = "PATH";
@@ -68,22 +65,20 @@ public class DatabaseConnector {
 
     //Location
     // Insert Location function
-    public void InsertLocation(Location location, String type, String label, String description, String deviceID, String pathid) {
-        Date timestamp = new Date();
+    public void InsertLocation(CustomLocation customLocation) {
         String df = DateFormat.getDateTimeInstance(
-                DateFormat.LONG, DateFormat.LONG).format(timestamp);
-        String locationID = timestamp.toString() + deviceID;
+                DateFormat.LONG, DateFormat.LONG).format(customLocation.getTimestamp());
 
         ContentValues newCon = new ContentValues();
-        newCon.put(LOCATIONID, locationID);
-        newCon.put(LATITUDE, location.getLatitude());
-        newCon.put(LONGITUDE, location.getLongitude());
-        newCon.put(USERID, deviceID);
+        newCon.put(LOCATIONID, customLocation.getLocID());
+        newCon.put(LATITUDE, customLocation.getLat());
+        newCon.put(LONGITUDE, customLocation.getLon());
+        newCon.put(USERID, customLocation.getUserID());
         newCon.put(TIMEDATE, df.replaceAll(" ", ""));
-        newCon.put(TYPE, type);
-        newCon.put(LOCLABEL, label);
-        newCon.put(LOCDESCRIPTION, description);
-        newCon.put(PATHID, pathid);
+        newCon.put(TYPE, customLocation.getType());
+        newCon.put(LOCLABEL, customLocation.getLabel());
+        newCon.put(LOCDESCRIPTION, customLocation.getDescription());
+        newCon.put(PATHID, customLocation.getPathID());
 
         open();
         database.insert(TABLE_LOC, null, newCon);

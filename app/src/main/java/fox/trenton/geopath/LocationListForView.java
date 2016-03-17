@@ -14,13 +14,13 @@ import java.util.Date;
  */
 public class LocationListForView extends ArrayAdapter<String> {
     private String[] loc_ids, user_ids, types, labels, descriptions, path_ids;
-    private int[] lats, lons;
+    private double[] lats, lons;
     private Date[] timestamps;
     private Activity context;
 
     public LocationListForView(Activity context, String[] loc_ids, String[] user_ids, String[] types,
                                String[] labels, String[] descriptions, String[] path_ids,
-                               int[] lats, int[] lons, Date[] timestamps) {
+                               double[] lats, double[] lons, Date[] timestamps) {
         super(context, R.layout.list_view_layout, loc_ids);
         this.context = context;
         this.loc_ids = loc_ids;

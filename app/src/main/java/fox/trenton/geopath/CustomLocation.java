@@ -1,6 +1,9 @@
 package fox.trenton.geopath;
 
-import java.util.Calendar;
+import android.content.Context;
+import android.location.Location;
+import android.provider.Settings;
+
 import java.util.Date;
 
 /**
@@ -9,7 +12,7 @@ import java.util.Date;
 public class CustomLocation {
 
     private String locID, userID, type, label, description, pathID;
-    private int lat, lon;
+    private Double lat, lon;
     private Date timestamp;
 
     public CustomLocation() {
@@ -19,14 +22,14 @@ public class CustomLocation {
         label = "";
         description = "";
         pathID = "";
-        lat = -1;
-        lon = -1;
+        lat = -1D;
+        lon = -1D;
         timestamp = new Date();
     }
 
-    public CustomLocation(String locID, int lat, int lon,
-                    String userID, Date timestamp, String type,
-                    String label, String description, String pathID) {
+    public CustomLocation(String locID, Double lat, Double lon,
+                               String userID, Date timestamp, String type,
+                               String label, String description, String pathID) {
         this.locID = locID;
         this.lat = lat;
         this.lon = lon;
@@ -36,6 +39,20 @@ public class CustomLocation {
         this.label = label;
         this.description = description;
         this.pathID = pathID;
+    }
+
+    public CustomLocation(Location location, Context context) {
+        String android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        Date time = new Date(location.getTime());
+        this.locID = time.toString() + android_id;
+        this.lat = location.getLatitude();
+        this.lon = location.getLongitude();
+        this.userID = android_id;
+        this.timestamp = time;
+        this.type = "general";
+        this.label = "";
+        this.description = "";
+        this.pathID = "";
     }
 
     public String getLocID() {
@@ -80,17 +97,17 @@ public class CustomLocation {
         this.pathID = pathID;
     }
 
-    public int getLat() {
+    public Double getLat() {
         return lat;
     }
-    public void setLat(int lat) {
+    public void setLat(Double lat) {
         this.lat = lat;
     }
 
-    public int getLon() {
+    public Double getLon() {
         return lon;
     }
-    public void setLon(int lon) {
+    public void setLon(Double lon) {
         this.lon = lon;
     }
 
