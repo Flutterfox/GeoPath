@@ -17,6 +17,7 @@ public class ParseLocJSON {
     public static String[] loc_id, user_id, type, label, description, path_id;
     public static double[] lat, lon;
     public static Date[] timestamp;
+    public static int[] position;
 
     public static final String JSON_ARRAY = "result";
     public static final String USER_ID = "user_id";
@@ -28,6 +29,7 @@ public class ParseLocJSON {
     public static final String LATITUDE = "lat";
     public static final String LONGITUDE = "lon";
     public static final String TIMESTAMP = "timestamp";
+    public static final String POSITION = "position";
 
     private String json;
 
@@ -48,6 +50,7 @@ public class ParseLocJSON {
         lat = new double[count];
         lon = new double[count];
         timestamp = new Date[count];
+        position = new int[count];
 
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
@@ -67,5 +70,6 @@ public class ParseLocJSON {
         lat[0] = location.getLat();
         lon[0] = location.getLon();
         timestamp[0] = location.getTimestamp();
+        position[0] = location.getPosition();
     }
 }

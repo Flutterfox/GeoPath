@@ -41,6 +41,7 @@ public class DatabaseConnector {
     private static final String TYPE = "TYPE";
     private static final String LOCLABEL = "LABEL";
     private static final String LOCDESCRIPTION = "DESCRIPTION";
+    private static final String POSITION = "POSITION";
 
 
     private SQLiteDatabase database;
@@ -79,6 +80,7 @@ public class DatabaseConnector {
         newCon.put(LOCLABEL, customLocation.getLabel());
         newCon.put(LOCDESCRIPTION, customLocation.getDescription());
         newCon.put(PATHID, customLocation.getPathID());
+        newCon.put(POSITION, customLocation.getPosition());
 
         open();
         database.insert(TABLE_LOC, null, newCon);
@@ -86,7 +88,7 @@ public class DatabaseConnector {
     }
 
     // Update Location function
-    public void UpdateLocation(String locID, Location location, String type, String label, String description, String deviceID, String pathid) {
+    public void UpdateLocation(String locID, Location location, String type, String label, String description, String deviceID, String pathid, int position) {
         Date timestamp = new Date(location.getTime());
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY", Locale.getDefault());
         String timedate = sdf.format(timestamp);
@@ -101,6 +103,7 @@ public class DatabaseConnector {
         editCon.put(LOCLABEL, label);
         editCon.put(LOCDESCRIPTION, description);
         editCon.put(PATHID, pathid);
+        editCon.put(POSITION, position);
 
         open();
         database.update(TABLE_LOC, editCon, LOCATIONID + "=" + locID, null);

@@ -9,7 +9,7 @@ import com.android.volley.toolbox.StringRequest;
  * Created by trenton on 3/7/16.
  */
 public class PathREST {
-    public static final String JSON_URL = "http://172.25.4.15:8080/GeoPathServer/rest/path/";
+    public static final String JSON_URL = "http://172.25.0.76:8080/GeoPathServer/rest/path/";
     LocationList ll;
 
     public void sendRequest(){
@@ -33,6 +33,6 @@ public class PathREST {
         pj.parseJSON();
         ll = new LocationList(ParseLocJSON.loc_id, ParseLocJSON.user_id, ParseLocJSON.type,
                 ParseLocJSON.label, ParseLocJSON.description, ParseLocJSON.path_id, ParseLocJSON.lat,
-                ParseLocJSON.lon, ParseLocJSON.timestamp);
+                ParseLocJSON.lon, ParseLocJSON.timestamp, ParseLocJSON.position);
     }
 }

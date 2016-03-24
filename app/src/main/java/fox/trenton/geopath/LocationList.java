@@ -11,11 +11,12 @@ import java.util.List;
 public class LocationList {
     private String[] loc_ids, user_ids, types, labels, descriptions, path_ids;
     private double[] lats, lons;
+    private int[] positions;
     private Date[] timestamps;
 
     public LocationList(String[] loc_ids, String[] user_ids, String[] types,
                         String[] labels, String[] descriptions, String[] path_ids,
-                        double[] lats, double[] lons, Date[] timestamps) {
+                        double[] lats, double[] lons, Date[] timestamps, int[] positions) {
         this.loc_ids = loc_ids;
         this.user_ids = user_ids;
         this.types = types;
@@ -25,6 +26,7 @@ public class LocationList {
         this.lats = lats;
         this.lons = lons;
         this.timestamps = timestamps;
+        this.positions = positions;
     }
 
     public List getList() {

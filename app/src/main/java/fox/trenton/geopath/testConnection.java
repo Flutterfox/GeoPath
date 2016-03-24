@@ -57,7 +57,7 @@ public class testConnection extends AppCompatActivity implements View.OnClickLis
         pj.parseJSON();
         LocationListForView ll = new LocationListForView(this, ParseLocJSON.loc_id, ParseLocJSON.user_id, ParseLocJSON.type,
                 ParseLocJSON.label, ParseLocJSON.description, ParseLocJSON.path_id, ParseLocJSON.lat,
-                ParseLocJSON.lon, ParseLocJSON.timestamp);
+                ParseLocJSON.lon, ParseLocJSON.timestamp, ParseLocJSON.position);
         listView.setAdapter(ll);
     }
 

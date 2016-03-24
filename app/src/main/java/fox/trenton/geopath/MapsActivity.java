@@ -78,7 +78,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Location loc = getLastBestLocation(locationManager);
                         if (loc != null) {
                             addCurrentLocation(loc);
-                            addToList(loc);
                         }
                     }
                 });
@@ -92,12 +91,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.addMarker(new MarkerOptions().position(loc).title("Current Location"));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 18));
+        addToList(location);
     }
 
     private void addCurrentLocation(Location location) {
         LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.addMarker(new MarkerOptions().position(loc).title("Previous Location"));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 18));
+        addToList(location);
     }
 
 
@@ -184,13 +185,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void goBack(View view){
-        //Saves locations to localDB
-        saveLocations();
+        if (locList.size() > 0) {
+            //Saves locations to localDB
+            saveLocations();
 
-        //Sends locations to OracleDB
-        LocationREST lr = new LocationREST();
-        lr.sendRequest(locList, this);
-
+            //Sends locations to OracleDB
+            LocationREST lr = new LocationREST();
+            lr.sendRequest(locList, this);
+        }
         //Starts the next activity
         Intent intent = new Intent(this, MainActivity.class);
         this.startActivity(intent);
