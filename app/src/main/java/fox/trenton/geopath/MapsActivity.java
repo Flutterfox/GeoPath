@@ -16,6 +16,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -167,7 +168,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void addToList(Location location) {
         CustomLocation cl = new CustomLocation(location, this);
         for (CustomLocation check : locList) {
-            if (check.getLocID() == cl.getLocID()) {
+            if (check.getLocID().equals(cl.getLocID())) {
                 return;
             }
         }
@@ -185,16 +186,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void goBack(View view){
+        CustomPath cp = new CustomPath();
+
         if (locList.size() > 0) {
             //Saves locations to localDB
             saveLocations();
 
             //Sends locations to OracleDB
             LocationREST lr = new LocationREST();
-            lr.sendRequest(locList, this);
+            cp = lr.sendRequest(locList, this);
         }
+
         //Starts the next activity
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent;
+        if (cp == null) {
+            intent = new Intent(this, MainActivity.class);
+
+        } else {
+            intent = new Intent(this, EditPathActivity.class);
+            intent.putExtra("content", new Gson().toJson(cp));
+        }
         this.startActivity(intent);
     }
 

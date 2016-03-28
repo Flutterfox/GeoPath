@@ -9,7 +9,7 @@ import com.android.volley.toolbox.StringRequest;
  * Created by trenton on 3/7/16.
  */
 public class PathREST {
-    public static final String JSON_URL = "http://172.25.0.76:8080/GeoPathServer/rest/path/";
+    public static final String JSON_URL = "http://172.25.3.102:8080/GeoPathServer/rest/path/";
     LocationList ll;
 
     public void sendRequest(){

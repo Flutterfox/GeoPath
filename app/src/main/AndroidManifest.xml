@@ -54,6 +54,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="fox.trenton.geopath.MainActivity" />
         </activity>
+        <activity
+            android:name=".EditPathActivity"
+            android:label="@string/title_activity_edit_path"
+            android:parentActivityName=".MapsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="fox.trenton.geopath.MapsActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -164,6 +164,12 @@ public class DatabaseConnector {
                 null, null);
     }
 
+    //Check if empty
+    public boolean CheckPathsEmpty() {
+        Cursor c = database.query(TABLE_PATH, null, null, null, null, null, null);
+        return c.getCount() <= 0;
+    }
+
     //Users
     // Insert Users function
     public void InsertUser(String deviceID) {
@@ -184,10 +190,6 @@ public class DatabaseConnector {
     //Check if empty
     public boolean CheckUsersEmpty() {
         Cursor c = database.query(TABLE_USERS, null, null, null, null, null, null);
-        if (c.getCount() > 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return c.getCount() <= 0;
     }
 }

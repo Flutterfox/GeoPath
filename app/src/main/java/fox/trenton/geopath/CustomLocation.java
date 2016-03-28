@@ -47,7 +47,7 @@ public class CustomLocation {
     public CustomLocation(Location location, Context context) {
         String android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         Date time = new Date(location.getTime());
-        this.locID = time.toString() + android_id;
+        this.locID = time.getTime() + android_id;
         this.lat = location.getLatitude();
         this.lon = location.getLongitude();
         this.userID = android_id;

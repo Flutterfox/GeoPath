@@ -6,9 +6,11 @@ import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,6 +22,19 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        DatabaseConnector dc = new DatabaseConnector(this);
+        dc.open();
+        if (dc.CheckPathsEmpty()){
+            //Display blank list
+            String[] blankArray = {"You do not currently have any paths."};
+            ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.listitem, R.id.textview, blankArray);
+            ListView listView = (ListView) findViewById(R.id.listViewPaths);
+            listView.setAdapter(adapter);
+        }
+        dc.close();
+
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabAdd);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        DatabaseConnector dc = new DatabaseConnector(this);
+        dc = new DatabaseConnector(this);
         dc.open();
         if (dc.CheckUsersEmpty()){
             dc.InsertUser(android_id);
@@ -73,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     public void saveUserToOracle(String android_id){
         UserREST ur = new UserREST();
         String response = ur.sendRequest(android_id, this);
-        if (response == "success") {
+        if (response.equals("success")) {
             Toast.makeText(MainActivity.this, "Successfully saved new user.", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(MainActivity.this, "Failed to save new user.", Toast.LENGTH_LONG).show();
