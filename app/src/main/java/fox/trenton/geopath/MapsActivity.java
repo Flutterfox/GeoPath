@@ -188,7 +188,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void goBack(View view){
         CustomPath cp = new CustomPath();
 
-        if (locList.size() > 0) {
+        if (locList.size() > 1) {
             //Saves locations to localDB
             saveLocations();
 
