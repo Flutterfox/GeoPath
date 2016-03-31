@@ -1,6 +1,5 @@
 package fox.trenton.geopath;
 
-import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -9,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,7 +16,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +84,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
 
-        }, 30000, 30000);
+        }, 60000, 60000);
     }
 
     private void showCurrentLocation(Location location) {
@@ -135,7 +134,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Location location = null;
         if (locationManager != null) {
-            locationManager.requestLocationUpdates(provider, 2000, 0, locationListener);
+            //30000 is 30 seconds minimum time, 10.0f is 10 feet minimum
+            locationManager.requestLocationUpdates(provider, 10000, 00.0f, locationListener);
             location = getLastBestLocation(locationManager);
         }
 
@@ -177,12 +177,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void saveLocations() {
         DatabaseConnector dc = new DatabaseConnector(this);
-        dc.open();
-        //dc.InsertLocation(location, "general", "", "", android_id, "");
+
         for (CustomLocation cl : locList) {
-            dc.InsertLocation(cl);
+            dc.open();
+            if (dc.GetOneLocation(cl.getLocID()).getCount() == 0) {
+                dc.InsertLocation(cl);
+            }
+            dc.close();
         }
-        dc.close();
     }
 
     public void goBack(View view){
@@ -192,21 +194,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //Saves locations to localDB
             saveLocations();
 
+            Toast.makeText(this, "Waiting for the path to be built.", Toast.LENGTH_LONG).show();
+
             //Sends locations to OracleDB
             LocationREST lr = new LocationREST();
-            cp = lr.sendRequest(locList, this);
+            lr.sendRequest(locList, this);
         }
-
-        //Starts the next activity
-        Intent intent;
-        if (cp == null) {
-            intent = new Intent(this, MainActivity.class);
-
-        } else {
-            intent = new Intent(this, EditPathActivity.class);
-            intent.putExtra("content", new Gson().toJson(cp));
-        }
-        this.startActivity(intent);
     }
 
 }

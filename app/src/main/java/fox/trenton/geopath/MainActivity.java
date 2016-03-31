@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
             ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.listitem, R.id.textview, blankArray);
             ListView listView = (ListView) findViewById(R.id.listViewPaths);
             listView.setAdapter(adapter);
+        } else {
+            //POPULATE LIST HERE.
         }
         dc.close();
 
@@ -72,10 +73,6 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-        else if (id == R.id.action_TestConnection) {
-            Intent intent = new Intent(this, testConnection.class);
-            this.startActivity(intent);
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -87,12 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void saveUserToOracle(String android_id){
         UserREST ur = new UserREST();
-        String response = ur.sendRequest(android_id, this);
-        if (response.equals("success")) {
-            Toast.makeText(MainActivity.this, "Successfully saved new user.", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(MainActivity.this, "Failed to save new user.", Toast.LENGTH_LONG).show();
-        }
-
+        ur.sendRequest(android_id, this);
     }
 }

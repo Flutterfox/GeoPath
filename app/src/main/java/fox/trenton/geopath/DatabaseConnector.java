@@ -106,32 +106,32 @@ public class DatabaseConnector {
         editCon.put(POSITION, position);
 
         open();
-        database.update(TABLE_LOC, editCon, LOCATIONID + "=" + locID, null);
+        database.update(TABLE_LOC, editCon, LOCATIONID + " = \'" + locID + "\'", null);
         close();
     }
 
     // Delete Location function
-    public void DeleteLocation(long locID) {
+    public void DeleteLocation(String locID) {
         open();
-        database.delete(TABLE_LOC, LOCATIONID + "=" + locID, null);
+        database.delete(TABLE_LOC, LOCATIONID + " = \'" + locID + "\'", null);
         close();
     }
 
     // Capture single data by ID
-    public Cursor GetOneLocation(long locID) {
-        return database.query(TABLE_LOC, null, LOCATIONID + "=" + locID, null, null,
+    public Cursor GetOneLocation(String locID) {
+        return database.query(TABLE_LOC, null, LOCATIONID + " = \'" + locID + "\'", null, null,
                 null, null);
     }
 
 
     //Path
     // Insert Path function
-    public void InsertPath(String pathID, String deviceID, String label, String description) {
+    public void InsertPath(CustomPath customPath) {
         ContentValues newCon = new ContentValues();
-        newCon.put(PATHID, pathID);
-        newCon.put(USERID, deviceID);
-        newCon.put(LOCLABEL, label);
-        newCon.put(LOCDESCRIPTION, description);
+        newCon.put(PATHID, customPath.getPathID());
+        newCon.put(USERID, customPath.getUserID());
+        newCon.put(LOCLABEL, customPath.getLabel());
+        newCon.put(LOCDESCRIPTION, customPath.getDescription());
 
         open();
         database.insert(TABLE_PATH, null, newCon);
@@ -139,15 +139,15 @@ public class DatabaseConnector {
     }
 
     // Update Path function
-    public void UpdatePath(String pathID, String deviceID, String label, String description) {
+    public void UpdatePath(CustomPath customPath) {
         ContentValues editCon = new ContentValues();
-        editCon.put(PATHID, pathID);
-        editCon.put(USERID, deviceID);
-        editCon.put(LOCLABEL, label);
-        editCon.put(LOCDESCRIPTION, description);
+        editCon.put(PATHID, customPath.getPathID());
+        editCon.put(USERID, customPath.getUserID());
+        editCon.put(LOCLABEL, customPath.getLabel());
+        editCon.put(LOCDESCRIPTION, customPath.getDescription());
 
         open();
-        database.update(TABLE_PATH, editCon, PATHID + "=" + pathID, null);
+        database.update(TABLE_PATH, editCon, PATHID + "=" + customPath.getPathID(), null);
         close();
     }
 

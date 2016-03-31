@@ -37,5 +37,12 @@ CustomPath cp = new CustomPath();
         PathREST pathREST = new PathREST();
         locList.addAll(pathREST.sendRequest(cp, this));
 
+        DatabaseConnector dc = new DatabaseConnector(this);
+        dc.open();
+        dc.InsertPath(cp);
+        for (CustomLocation cl : locList) {
+            dc.InsertLocation(cl);
+        }
+        dc.close();
     }
 }

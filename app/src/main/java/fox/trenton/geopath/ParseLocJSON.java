@@ -31,8 +31,7 @@ public class ParseLocJSON {
         });
         Gson gson = builder.create();
         CustomLocation[] locations = gson.fromJson(json, CustomLocation[].class);
-        List<CustomLocation> locList = Arrays.asList(locations);
 
-        return locList;
+        return Arrays.asList(locations);
     }
 }

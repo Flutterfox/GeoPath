@@ -46,15 +46,6 @@
                 android:value="fox.trenton.geopath.MainActivity" />
         </activity>
         <activity
-            android:name=".testConnection"
-            android:label="@string/title_activity_test_connection"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="fox.trenton.geopath.MainActivity" />
-        </activity>
-        <activity
             android:name=".EditPathActivity"
             android:label="@string/title_activity_edit_path"
             android:parentActivityName=".MapsActivity"

@@ -8,12 +8,4 @@
         android:title="@string/action_settings"
         app:showAsAction="never"/>
 
-    <item
-        android:id="@+id/action_TestConnection"
-        app:showAsAction="never"
-        android:title="Test Connection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-
 </menu>

@@ -1,6 +1,7 @@
 package fox.trenton.geopath;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -19,21 +20,22 @@ import java.util.Map;
  * Created by trenton on 3/7/16.
  */
 public class UserREST {
-    public static final String JSON_URL = "http://172.25.3.102:8080/GeoPathServer/rest/user/insert";
-    String response;
+    public static final String JSON_URL = "http://172.25.2.109:8080/GeoPathServer/rest/user/insert";
+    Context context;
 
-    public String sendRequest(final String id, Context context){
+    public void sendRequest(final String id, Context context){
+        this.context = context;
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest sr = new StringRequest(Request.Method.POST, JSON_URL,
             new Response.Listener<String>() {
                 @Override
-                public void onResponse(String response) {
-                    showResponse(response);
+                public void onResponse(String newresponse) {
+                    oracleResponse(newresponse);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    showResponse("There was an error.");
+                    oracleResponse(error.toString());
                 }
             }){
                 @Override
@@ -53,10 +55,13 @@ public class UserREST {
         sr.setRetryPolicy(new DefaultRetryPolicy(10000, 4,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
-        return response;
     }
 
-    public void showResponse(String response){
-        this.response = response;
+    public void oracleResponse(String response) {
+        if (response.equals("success")) {
+            Toast.makeText(context, "Successfully saved new user.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(context, "Failed to save new user.", Toast.LENGTH_LONG).show();
+        }
     }
 }

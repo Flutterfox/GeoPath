@@ -1,6 +1,8 @@
 package fox.trenton.geopath;
 
 import android.content.Context;
+import android.content.Intent;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -10,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.UnsupportedEncodingException;
@@ -21,21 +24,24 @@ import java.util.List;
  * Created by trenton on 3/7/16.
  */
 public class LocationREST {
-    public static final String JSON_URL = "http://172.25.3.102:8080/GeoPathServer/rest/path/create";
-    CustomPath cp;
+    public static final String JSON_URL = "http://172.25.2.109:8080/GeoPathServer/rest/path/create";
+    Context context;
 
-    public CustomPath sendRequest(final List<CustomLocation> locations, Context context) {
+    public void sendRequest(final List<CustomLocation> locations,final Context context) {
+        this.context = context;
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest sr = new StringRequest(Request.Method.POST,
                 JSON_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                showJSON(response);
+                ParsePathJSON pj = new ParsePathJSON(response);
+                Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+                showResponse(pj.parseJSON());
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //showResponse("There was an error.");
+                Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
             }
         }) {
 
@@ -61,18 +67,20 @@ public class LocationREST {
         sr.setRetryPolicy(new DefaultRetryPolicy(10000, 4,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
-        return cp;
     }
 
-    public void showJSON(String json) {
-/*        ParseLocJSON pj = new ParseLocJSON(json);
-        pj.parseJSON();
-        ll = new LocationList(ParseLocJSON.loc_id, ParseLocJSON.user_id, ParseLocJSON.type,
-                ParseLocJSON.label, ParseLocJSON.description, ParseLocJSON.path_id, ParseLocJSON.lat,
-                ParseLocJSON.lon, ParseLocJSON.timestamp, ParseLocJSON.position);*/
+    public void showResponse(CustomPath cp) {
+        //Starts the next activity
+        Intent intent;
+        if (cp.getPathID().equals("")) {
+            Toast.makeText(context, "Not enough data collected.", Toast.LENGTH_LONG).show();
+            intent = new Intent(context, MainActivity.class);
 
-        ParsePathJSON pj = new ParsePathJSON(json);
-        cp = pj.parseJSON();
+        } else {
+            intent = new Intent(context, EditPathActivity.class);
+            intent.putExtra("content", new Gson().toJson(cp));
+        }
+        context.startActivity(intent);
     }
 
 }
