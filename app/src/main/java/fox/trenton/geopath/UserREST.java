@@ -20,7 +20,7 @@ import java.util.Map;
  * Created by trenton on 3/7/16.
  */
 public class UserREST {
-    public static final String JSON_URL = "http://172.25.2.109:8080/GeoPathServer/rest/user/insert";
+    public static final String JSON_URL = "http://192.168.254.8:8080/GeoPathServer/rest/user/insert";
     Context context;
 
     public void sendRequest(final String id, Context context){

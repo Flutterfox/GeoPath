@@ -24,7 +24,7 @@ import java.util.List;
  * Created by trenton on 3/7/16.
  */
 public class LocationREST {
-    public static final String JSON_URL = "http://172.25.2.109:8080/GeoPathServer/rest/path/create";
+    public static final String JSON_URL = "http://192.168.254.8:8080/GeoPathServer/rest/path/create";
     Context context;
 
     public void sendRequest(final List<CustomLocation> locations,final Context context) {
@@ -35,7 +35,6 @@ public class LocationREST {
             @Override
             public void onResponse(String response) {
                 ParsePathJSON pj = new ParsePathJSON(response);
-                Toast.makeText(context, response, Toast.LENGTH_LONG).show();
                 showResponse(pj.parseJSON());
             }
         }, new Response.ErrorListener() {

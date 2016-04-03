@@ -14,6 +14,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -63,10 +64,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
         //Move to current location
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         showCurrentLocation(getLocation());
+        //mMap.setMyLocationEnabled(true);
 
         //Collects location periodically
         t = new Timer(true);
@@ -89,14 +92,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void showCurrentLocation(Location location) {
         LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(loc).title("Current Location"));
+        mMap.addMarker(new MarkerOptions().position(loc).icon(BitmapDescriptorFactory.fromResource(R.mipmap.point)));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 18));
         addToList(location);
     }
 
     private void addCurrentLocation(Location location) {
         LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(loc).title("Previous Location"));
+        mMap.addMarker(new MarkerOptions().position(loc).icon(BitmapDescriptorFactory.fromResource(R.mipmap.point)));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 18));
         addToList(location);
     }

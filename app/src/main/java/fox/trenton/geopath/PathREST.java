@@ -1,6 +1,7 @@
 package fox.trenton.geopath;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -14,6 +15,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.GsonBuilder;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
@@ -22,17 +24,17 @@ import java.util.List;
  * Created by trenton on 3/7/16.
  */
 public class PathREST {
-    public static final String JSON_URL = "http://172.25.2.109:8080/GeoPathServer/rest/path/update";
-    List<CustomLocation> locList;
+    public static final String JSON_URL = "http://192.168.254.8:8080/GeoPathServer/rest/path/update";
+    Context context;
 
-    public List<CustomLocation> sendRequest(final CustomPath path, final Context context) {
+    public void sendRequest(final CustomPath path, final Context context) {
+        this.context = context;
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest sr = new StringRequest(Request.Method.POST,
                 JSON_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //showJSON(response);
-                Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+                savePath(response);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -63,11 +65,27 @@ public class PathREST {
         sr.setRetryPolicy(new DefaultRetryPolicy(10000, 4,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
-        return locList;
     }
 
-    public void showJSON(String json) {
+    private void savePath(String json) {
+        List<CustomLocation> locList = new ArrayList<>();
+
+        //Parses the json into location objects
         ParseLocJSON pj = new ParseLocJSON(json);
         locList.addAll(pj.parseJSON());
+
+        //Saves the analysis server's results
+        Toast.makeText(context, "Saving the calculated path", Toast.LENGTH_LONG).show();
+        DatabaseConnector dc = new DatabaseConnector(context);
+        dc.open();
+        for (CustomLocation cl : locList) {
+            dc.InsertLocation(cl);
+        }
+        dc.close();
+
+        //Returns to the main activity
+        Intent intent;
+        intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
     }
 }

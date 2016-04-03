@@ -11,11 +11,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 public class DatabaseConnector {
 
     // Declare Variables
@@ -67,15 +62,13 @@ public class DatabaseConnector {
     //Location
     // Insert Location function
     public void InsertLocation(CustomLocation customLocation) {
-        String df = DateFormat.getDateTimeInstance(
-                DateFormat.LONG, DateFormat.LONG).format(customLocation.getTimestamp());
 
         ContentValues newCon = new ContentValues();
         newCon.put(LOCATIONID, customLocation.getLocID());
         newCon.put(LATITUDE, customLocation.getLat());
         newCon.put(LONGITUDE, customLocation.getLon());
         newCon.put(USERID, customLocation.getUserID());
-        newCon.put(TIMEDATE, df.replaceAll(" ", ""));
+        newCon.put(TIMEDATE, customLocation.getTimestamp().getTime());
         newCon.put(TYPE, customLocation.getType());
         newCon.put(LOCLABEL, customLocation.getLabel());
         newCon.put(LOCDESCRIPTION, customLocation.getDescription());
@@ -89,16 +82,13 @@ public class DatabaseConnector {
 
     // Update Location function
     public void UpdateLocation(String locID, Location location, String type, String label, String description, String deviceID, String pathid, int position) {
-        Date timestamp = new Date(location.getTime());
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY", Locale.getDefault());
-        String timedate = sdf.format(timestamp);
 
         ContentValues editCon = new ContentValues();
         editCon.put(LOCATIONID, locID);
         editCon.put(LATITUDE, location.getLatitude());
         editCon.put(LONGITUDE, location.getLongitude());
         editCon.put(USERID, deviceID);
-        editCon.put(TIMEDATE, timedate);
+        editCon.put(TIMEDATE, location.getTime());
         editCon.put(TYPE, type);
         editCon.put(LOCLABEL, label);
         editCon.put(LOCDESCRIPTION, description);
@@ -123,6 +113,12 @@ public class DatabaseConnector {
                 null, null);
     }
 
+    //Return cursor of locations by pathID
+    public Cursor GetPathLocations(CustomPath customPath) {
+        return database.query(TABLE_LOC, null, PATHID + " = \'" + customPath.getPathID() + "\'", null, null,
+                null, null);
+    }
+
 
     //Path
     // Insert Path function
@@ -130,8 +126,8 @@ public class DatabaseConnector {
         ContentValues newCon = new ContentValues();
         newCon.put(PATHID, customPath.getPathID());
         newCon.put(USERID, customPath.getUserID());
-        newCon.put(LOCLABEL, customPath.getLabel());
-        newCon.put(LOCDESCRIPTION, customPath.getDescription());
+        newCon.put(PATHLABEL, customPath.getLabel());
+        newCon.put(PATHDESCRIPTION, customPath.getDescription());
 
         open();
         database.insert(TABLE_PATH, null, newCon);
@@ -143,8 +139,8 @@ public class DatabaseConnector {
         ContentValues editCon = new ContentValues();
         editCon.put(PATHID, customPath.getPathID());
         editCon.put(USERID, customPath.getUserID());
-        editCon.put(LOCLABEL, customPath.getLabel());
-        editCon.put(LOCDESCRIPTION, customPath.getDescription());
+        editCon.put(PATHLABEL, customPath.getLabel());
+        editCon.put(PATHDESCRIPTION, customPath.getDescription());
 
         open();
         database.update(TABLE_PATH, editCon, PATHID + "=" + customPath.getPathID(), null);
@@ -152,15 +148,20 @@ public class DatabaseConnector {
     }
 
     // Delete Path function
-    public void DeletePath(long pathID) {
+    public void DeletePath(String pathID) {
         open();
         database.delete(TABLE_PATH, PATHID + "=" + pathID, null);
         close();
     }
 
     // Capture single data by ID
-    public Cursor GetOnePath(long pathID) {
+    public Cursor GetOnePath(String pathID) {
         return database.query(TABLE_PATH, null, PATHID + "=" + pathID, null, null,
+                null, null);
+    }
+
+    public Cursor GetAllPaths() {
+        return database.query(TABLE_PATH, null, null, null, null,
                 null, null);
     }
 
