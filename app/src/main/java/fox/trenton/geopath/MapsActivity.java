@@ -7,6 +7,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Toast;
 
@@ -43,6 +44,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabStop);
+        fab.getDrawable().mutate().setTint(ContextCompat.getColor(this, R.color.colorIcon));
+        fab.getDrawable().setAlpha(255);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

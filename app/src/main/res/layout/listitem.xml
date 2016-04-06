@@ -10,7 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:text="Example application"
+        android:text="You do not currently have any paths."
         android:textSize="16sp" />
 
     <TextView
@@ -19,7 +19,7 @@
         android:layout_height="26dip"
         android:ellipsize="marquee"
         android:singleLine="true"
-        android:text="Description"
+        android:text="Please click the button below to begin."
         android:textSize="12sp" />
 
 </LinearLayout>

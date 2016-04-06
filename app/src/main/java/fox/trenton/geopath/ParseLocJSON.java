@@ -6,9 +6,9 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -30,8 +30,9 @@ public class ParseLocJSON {
             }
         });
         Gson gson = builder.create();
-        CustomLocation[] locations = gson.fromJson(json, CustomLocation[].class);
+        Type listType = new TypeToken<List<CustomLocation>>() {}.getType();
+        List<CustomLocation> locations = gson.fromJson(json, listType);
 
-        return Arrays.asList(locations);
+        return locations;
     }
 }

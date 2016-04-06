@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Declare Variables
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
 
     //Database Name
     private static final String DB_NAME = "GeoPath";
@@ -63,8 +63,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //Create Table Location
     private static final String CREATE_TABLE_LOCATION = "CREATE TABLE " + TABLE_LOC + "("
             + LOCATIONID + " TEXT PRIMARY KEY, "
-            + LATITUDE + " INTEGER, "
-            + LONGITUDE + " INTEGER, "
+            + LATITUDE + " TEXT, "
+            + LONGITUDE + " TEXT, "
             + USERID + " TEXT, "
             + TIMEDATE + " INTEGER, "
             + TYPE + " TEXT, "

@@ -9,7 +9,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.Location;
 
 public class DatabaseConnector {
 
@@ -65,8 +64,8 @@ public class DatabaseConnector {
 
         ContentValues newCon = new ContentValues();
         newCon.put(LOCATIONID, customLocation.getLocID());
-        newCon.put(LATITUDE, customLocation.getLat());
-        newCon.put(LONGITUDE, customLocation.getLon());
+        newCon.put(LATITUDE, String.valueOf(customLocation.getLat()));
+        newCon.put(LONGITUDE, String.valueOf(customLocation.getLon()));
         newCon.put(USERID, customLocation.getUserID());
         newCon.put(TIMEDATE, customLocation.getTimestamp().getTime());
         newCon.put(TYPE, customLocation.getType());
@@ -81,22 +80,22 @@ public class DatabaseConnector {
     }
 
     // Update Location function
-    public void UpdateLocation(String locID, Location location, String type, String label, String description, String deviceID, String pathid, int position) {
+    public void UpdateLocation(CustomLocation customLocation) {
 
         ContentValues editCon = new ContentValues();
-        editCon.put(LOCATIONID, locID);
-        editCon.put(LATITUDE, location.getLatitude());
-        editCon.put(LONGITUDE, location.getLongitude());
-        editCon.put(USERID, deviceID);
-        editCon.put(TIMEDATE, location.getTime());
-        editCon.put(TYPE, type);
-        editCon.put(LOCLABEL, label);
-        editCon.put(LOCDESCRIPTION, description);
-        editCon.put(PATHID, pathid);
-        editCon.put(POSITION, position);
+        editCon.put(LOCATIONID, customLocation.getLocID());
+        editCon.put(LATITUDE, String.valueOf(customLocation.getLat()));
+        editCon.put(LONGITUDE, String.valueOf(customLocation.getLon()));
+        editCon.put(USERID, customLocation.getUserID());
+        editCon.put(TIMEDATE, customLocation.getTimestamp().getTime());
+        editCon.put(TYPE, customLocation.getType());
+        editCon.put(LOCLABEL, customLocation.getLabel());
+        editCon.put(LOCDESCRIPTION, customLocation.getDescription());
+        editCon.put(PATHID, customLocation.getPathID());
+        editCon.put(POSITION, customLocation.getPosition());
 
         open();
-        database.update(TABLE_LOC, editCon, LOCATIONID + " = \'" + locID + "\'", null);
+        database.update(TABLE_LOC, editCon, LOCATIONID + " = \'" + customLocation.getLocID() + "\'", null);
         close();
     }
 
@@ -115,7 +114,8 @@ public class DatabaseConnector {
 
     //Return cursor of locations by pathID
     public Cursor GetPathLocations(CustomPath customPath) {
-        return database.query(TABLE_LOC, null, PATHID + " = \'" + customPath.getPathID() + "\'", null, null,
+        String[] whereArgs = new String[] {customPath.getPathID().trim()};
+        return database.query(TABLE_LOC, null, PATHID + " = ?", whereArgs, null,
                 null, null);
     }
 

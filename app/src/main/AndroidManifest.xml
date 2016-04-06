@@ -52,7 +52,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="fox.trenton.geopath.MapsActivity" />
+                android:value="fox.trenton.geopath.MainActivity" />
         </activity>
         <activity
             android:name=".ViewPathActivity"

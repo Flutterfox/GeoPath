@@ -3,6 +3,7 @@ package fox.trenton.geopath;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -31,6 +32,8 @@ CustomPath cp = new CustomPath();
         final EditText editTextLabel = (EditText)findViewById(R.id.editTextLabel);
         final EditText editTextDescription = (EditText)findViewById(R.id.editTextDescription);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.getDrawable().mutate().setTint(ContextCompat.getColor(this, R.color.colorIcon));
+        fab.getDrawable().setAlpha(255);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,16 +46,16 @@ CustomPath cp = new CustomPath();
     }
 
     private void savePath() {
-        //sends request for saving path on oracledb
-        Toast.makeText(this, "Sending path to our servers", Toast.LENGTH_LONG).show();
-        PathREST pathREST = new PathREST();
-        pathREST.sendRequest(cp, this);
-
         //saves to local database
-        Toast.makeText(this, "Saving path to your device", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Saving path to your device", Toast.LENGTH_SHORT).show();
         DatabaseConnector dc = new DatabaseConnector(this);
         dc.open();
         dc.InsertPath(cp);
         dc.close();
+
+        //sends request for saving path on oracledb
+        Toast.makeText(this, "Sending path to our servers", Toast.LENGTH_SHORT).show();
+        PathREST pathREST = new PathREST();
+        pathREST.sendRequest(cp, this);
     }
 }

@@ -12,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.UnsupportedEncodingException;
@@ -24,11 +25,13 @@ import java.util.List;
  * Created by trenton on 3/7/16.
  */
 public class PathREST {
-    public static final String JSON_URL = "http://192.168.254.8:8080/GeoPathServer/rest/path/update";
+    public static final String JSON_URL = "http://172.25.3.48:8080/GeoPathServer/rest/path/update";
     Context context;
+    CustomPath cp;
 
     public void sendRequest(final CustomPath path, final Context context) {
         this.context = context;
+        cp = path;
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest sr = new StringRequest(Request.Method.POST,
                 JSON_URL, new Response.Listener<String>() {
@@ -74,18 +77,24 @@ public class PathREST {
         ParseLocJSON pj = new ParseLocJSON(json);
         locList.addAll(pj.parseJSON());
 
-        //Saves the analysis server's results
-        Toast.makeText(context, "Saving the calculated path", Toast.LENGTH_LONG).show();
-        DatabaseConnector dc = new DatabaseConnector(context);
-        dc.open();
-        for (CustomLocation cl : locList) {
-            dc.InsertLocation(cl);
-        }
-        dc.close();
+        if (locList.size() > 0) {
+            //Saves the analysis server's results
+            Toast.makeText(context, "Saving the calculated path", Toast.LENGTH_SHORT).show();
+            DatabaseConnector dc = new DatabaseConnector(context);
+            dc.open();
+            for (CustomLocation cl : locList) {
+                dc.UpdateLocation(cl);
+            }
+            dc.close();
 
-        //Returns to the main activity
-        Intent intent;
-        intent = new Intent(context, MainActivity.class);
-        context.startActivity(intent);
+            //Goes to View Path
+            Intent intent = new Intent(context, ViewPathActivity.class);
+            intent.putExtra("content", new Gson().toJson(cp));
+            context.startActivity(intent);
+        } else {
+            Toast.makeText(context, "A path was not successfully calculated", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context, MainActivity.class);
+            context.startActivity(intent);
+        }
     }
 }

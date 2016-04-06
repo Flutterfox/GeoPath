@@ -1,15 +1,20 @@
 package fox.trenton.geopath;
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 
@@ -35,6 +40,9 @@ public class ViewPathActivity extends FragmentActivity implements OnMapReadyCall
         //parses the objects in the cursor
         if (cursor != null && cursor.getCount() > 0) {
             locList = new ArrayList<>();
+            cursor.moveToFirst();
+            DatabaseUtils du = new DatabaseUtils();
+            String stringCursor = du.dumpCursorToString(cursor);
             while (cursor.moveToNext()) {
                 CustomLocation customLocation = new CustomLocation();
                 customLocation.setLocID(cursor.getString(0));
@@ -74,11 +82,15 @@ public class ViewPathActivity extends FragmentActivity implements OnMapReadyCall
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
-        if (locList != null) {
+        if (locList != null && locList.size() > 0) {
             drawPrimaryLinePath(mMap);
 
             LatLng loc = new LatLng(locList.get(0).getLat(), locList.get(0).getLon());
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 18));
+        } else {
+            Toast.makeText(this, "No locations found belonging to the path.", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, MainActivity.class);
+            this.startActivity(intent);
         }
     }
 
@@ -96,14 +108,15 @@ public class ViewPathActivity extends FragmentActivity implements OnMapReadyCall
 
         PolylineOptions options = new PolylineOptions();
 
-        options.color( Color.parseColor("#CC0000FF") );
-        options.width( 5 );
-        options.visible( true );
+        options.color(Color.parseColor("#FFFF5722"));
+        options.width(10);
+        options.visible(true);
 
         for ( CustomLocation locRecorded : locList )
         {
-            options.add( new LatLng( locRecorded.getLat(),
-                    locRecorded.getLon() ) );
+            LatLng loc = new LatLng(locRecorded.getLat(), locRecorded.getLon());
+            options.add(loc);
+            mMap.addMarker(new MarkerOptions().position(loc).icon(BitmapDescriptorFactory.fromResource(R.mipmap.point)).anchor(.5f,.5f));
         }
 
         mMap.addPolyline(options);

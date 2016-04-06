@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    List<CustomPath> pathList = new ArrayList<>();
+    List<CustomPath> pathList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
         dc.open();
         if (dc.CheckPathsEmpty()){
             //Display blank list
-            String[] blankArray = {"You do not currently have any paths."};
+            String[] blankArray = new String[1];
+            blankArray[0] = "You do not currently have any paths.";
             ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.listitem, R.id.firstLine, blankArray);
             listView.setAdapter(adapter);
         } else {
@@ -79,7 +80,9 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showPath(pathList.get(position));
+                if (pathList != null && pathList.size() > 0) {
+                    showPath(pathList.get(position));
+                }
             }
         });
 
