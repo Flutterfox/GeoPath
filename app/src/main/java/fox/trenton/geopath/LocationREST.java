@@ -24,7 +24,7 @@ import java.util.List;
  * Created by trenton on 3/7/16.
  */
 public class LocationREST {
-    public static final String JSON_URL = "http://172.25.3.48:8080/GeoPathServer/rest/path/create";
+    public static final String JSON_URL = "http://172.25.7.39:8080/GeoPathServer/rest/path/create";
     Context context;
 
     public void sendRequest(final List<CustomLocation> locations,final Context context) {
@@ -63,7 +63,7 @@ public class LocationREST {
 
         };
 
-        sr.setRetryPolicy(new DefaultRetryPolicy(10000, 4,
+        sr.setRetryPolicy(new DefaultRetryPolicy(10000, 5,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }

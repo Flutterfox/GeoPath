@@ -25,7 +25,7 @@ import java.util.List;
  * Created by trenton on 3/7/16.
  */
 public class PathREST {
-    public static final String JSON_URL = "http://172.25.3.48:8080/GeoPathServer/rest/path/update";
+    public static final String JSON_URL = "http://172.25.7.39:8080/GeoPathServer/rest/path/update";
     Context context;
     CustomPath cp;
 
@@ -64,8 +64,7 @@ public class PathREST {
             }
 
         };
-
-        sr.setRetryPolicy(new DefaultRetryPolicy(10000, 4,
+        sr.setRetryPolicy(new DefaultRetryPolicy(10000, 5,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
@@ -79,7 +78,7 @@ public class PathREST {
 
         if (locList.size() > 0) {
             //Saves the analysis server's results
-            Toast.makeText(context, "Saving the calculated path", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Saving the calculated path.", Toast.LENGTH_SHORT).show();
             DatabaseConnector dc = new DatabaseConnector(context);
             dc.open();
             for (CustomLocation cl : locList) {
@@ -92,7 +91,8 @@ public class PathREST {
             intent.putExtra("content", new Gson().toJson(cp));
             context.startActivity(intent);
         } else {
-            Toast.makeText(context, "A path was not successfully calculated", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "A path was not successfully calculated.", Toast.LENGTH_SHORT).show();
+
             Intent intent = new Intent(context, MainActivity.class);
             context.startActivity(intent);
         }

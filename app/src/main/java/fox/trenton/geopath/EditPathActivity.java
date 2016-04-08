@@ -1,6 +1,7 @@
 package fox.trenton.geopath;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -47,15 +48,20 @@ CustomPath cp = new CustomPath();
 
     private void savePath() {
         //saves to local database
-        Toast.makeText(this, "Saving path to your device", Toast.LENGTH_SHORT).show();
         DatabaseConnector dc = new DatabaseConnector(this);
         dc.open();
         dc.InsertPath(cp);
         dc.close();
 
         //sends request for saving path on oracledb
-        Toast.makeText(this, "Sending path to our servers", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Calculating path.", Toast.LENGTH_SHORT).show();
         PathREST pathREST = new PathREST();
         pathREST.sendRequest(cp, this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        this.startActivity(intent);
     }
 }

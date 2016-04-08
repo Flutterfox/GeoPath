@@ -1,5 +1,6 @@
 package fox.trenton.geopath;
 
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -90,7 +91,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
 
-        }, 60000, 60000);
+        }, 15000, 15000);
     }
 
     private void showCurrentLocation(Location location) {
@@ -141,7 +142,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Location location = null;
         if (locationManager != null) {
             //30000 is 30 seconds minimum time, 10.0f is 10 feet minimum
-            locationManager.requestLocationUpdates(provider, 10000, 00.0f, locationListener);
+            locationManager.requestLocationUpdates(provider, 3000, 00.0f, locationListener);
             location = getLastBestLocation(locationManager);
         }
 
@@ -206,6 +207,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LocationREST lr = new LocationREST();
             lr.sendRequest(locList, this);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        this.startActivity(intent);
     }
 
 }

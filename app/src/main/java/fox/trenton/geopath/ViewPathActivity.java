@@ -2,7 +2,6 @@ package fox.trenton.geopath;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -40,9 +39,6 @@ public class ViewPathActivity extends FragmentActivity implements OnMapReadyCall
         //parses the objects in the cursor
         if (cursor != null && cursor.getCount() > 0) {
             locList = new ArrayList<>();
-            cursor.moveToFirst();
-            DatabaseUtils du = new DatabaseUtils();
-            String stringCursor = du.dumpCursorToString(cursor);
             while (cursor.moveToNext()) {
                 CustomLocation customLocation = new CustomLocation();
                 customLocation.setLocID(cursor.getString(0));
@@ -121,5 +117,11 @@ public class ViewPathActivity extends FragmentActivity implements OnMapReadyCall
 
         mMap.addPolyline(options);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        this.startActivity(intent);
     }
 }

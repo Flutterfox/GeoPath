@@ -20,7 +20,7 @@ import java.util.Map;
  * Created by trenton on 3/7/16.
  */
 public class UserREST {
-    public static final String JSON_URL = "http://172.25.3.48:8080/GeoPathServer/rest/user/insert";
+    public static final String JSON_URL = "http://172.25.7.39:8080/GeoPathServer/rest/user/insert";
     Context context;
 
     public void sendRequest(final String id, Context context){
@@ -52,7 +52,7 @@ public class UserREST {
                 return headers;
             }
         };
-        sr.setRetryPolicy(new DefaultRetryPolicy(10000, 4,
+        sr.setRetryPolicy(new DefaultRetryPolicy(10000, 5,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
