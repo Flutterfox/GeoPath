@@ -22,6 +22,7 @@ public class DatabaseConnector {
     //Common Column names
     private static final String USERID = "USERID";
     private static final String PATHID = "PATHID";
+    private static final String TYPE = "TYPE";
 
     //Path Table - Column names
     private static final String PATHLABEL = "LABEL";
@@ -32,7 +33,6 @@ public class DatabaseConnector {
     private static final String LATITUDE = "LATITUDE";
     private static final String LONGITUDE = "LONGITUDE";
     private static final String TIMEDATE = "TIMEDATE";
-    private static final String TYPE = "TYPE";
     private static final String LOCLABEL = "LABEL";
     private static final String LOCDESCRIPTION = "DESCRIPTION";
     private static final String POSITION = "POSITION";
@@ -128,6 +128,7 @@ public class DatabaseConnector {
         newCon.put(USERID, customPath.getUserID());
         newCon.put(PATHLABEL, customPath.getLabel());
         newCon.put(PATHDESCRIPTION, customPath.getDescription());
+        newCon.put(TYPE, customPath.getType());
 
         open();
         database.insert(TABLE_PATH, null, newCon);
@@ -141,6 +142,7 @@ public class DatabaseConnector {
         editCon.put(USERID, customPath.getUserID());
         editCon.put(PATHLABEL, customPath.getLabel());
         editCon.put(PATHDESCRIPTION, customPath.getDescription());
+        editCon.put(TYPE, customPath.getType());
 
         open();
         database.update(TABLE_PATH, editCon, PATHID + "=" + customPath.getPathID(), null);

@@ -26,6 +26,7 @@ CustomPath cp = new CustomPath();
 
         //Gets path from intent
         cp = new Gson().fromJson(getIntent().getStringExtra("content"), CustomPath.class);
+        toolbar.setTitle("Edit - " + cp.getType());
 
         //Used to return toasts to this activity
         final Context context = this;

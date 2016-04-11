@@ -4,13 +4,14 @@ package fox.trenton.geopath;
  * Created by Trenton on 3/11/2016.
  */
 public class CustomPath {
-    private String userID, label, description, pathID;
+    private String userID, label, description, pathID, type;
 
     public CustomPath() {
         userID = "";
         label = "";
         description = "";
         pathID = "";
+        type = "";
     }
 
     public CustomPath(String userID, String label, String description, String pathID) {
@@ -47,4 +48,7 @@ public class CustomPath {
     public void setPathID(String pathID) {
         this.pathID = pathID;
     }
+
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
 }
